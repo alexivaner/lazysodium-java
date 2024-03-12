@@ -8,7 +8,6 @@
 
 package com.goterl.lazysodium.interfaces;
 
-
 import com.goterl.lazysodium.utils.DetachedDecrypt;
 import com.goterl.lazysodium.utils.DetachedEncrypt;
 import com.goterl.lazysodium.utils.Key;
@@ -24,24 +23,24 @@ public interface AEAD {
     // REGULAR CHACHA
 
     int CHACHA20POLY1305_KEYBYTES = 32,
-        CHACHA20POLY1305_NPUBBYTES = 8,
-        CHACHA20POLY1305_ABYTES = 16;
+            CHACHA20POLY1305_NPUBBYTES = 8,
+            CHACHA20POLY1305_ABYTES = 16;
 
 
 
     // IETF CHACHA
 
     int CHACHA20POLY1305_IETF_ABYTES = 16,
-        CHACHA20POLY1305_IETF_KEYBYTES = 32,
-        CHACHA20POLY1305_IETF_NPUBBYTES = 12;
+            CHACHA20POLY1305_IETF_KEYBYTES = 32,
+            CHACHA20POLY1305_IETF_NPUBBYTES = 12;
 
 
 
     // This is XCHACHA not CHACHA.
 
     int XCHACHA20POLY1305_IETF_KEYBYTES = 32,
-        XCHACHA20POLY1305_IETF_ABYTES = 16,
-        XCHACHA20POLY1305_IETF_NPUBBYTES = 24;
+            XCHACHA20POLY1305_IETF_ABYTES = 16,
+            XCHACHA20POLY1305_IETF_NPUBBYTES = 24;
 
 
     // AES256
@@ -293,11 +292,26 @@ public interface AEAD {
 
         Key keygen(Method method);
 
+        byte[] encrypt(byte[] m,
+                       String additionalData,
+                       byte[] nPub,
+                       Key k,
+                       AEAD.Method method);
+
+        byte[] encrypt(
+                byte[] m,
+                String additionalData,
+                byte[] nSec,
+                byte[] nPub,
+                Key k,
+                Method method
+        );
+
         String encrypt(String m,
-                      String additionalData,
-                      byte[] nPub,
-                      Key k,
-                      AEAD.Method method);
+                       String additionalData,
+                       byte[] nPub,
+                       Key k,
+                       AEAD.Method method);
 
         String encrypt(
                 String m,
@@ -308,13 +322,30 @@ public interface AEAD {
                 Method method
         );
 
+        byte[] decrypt(
+                byte[] cipher,
+                String additionalData,
+                byte[] nPub,
+                Key k,
+                AEAD.Method method
+        )throws AEADBadTagException;
+
+        byte[] decrypt(
+                byte[] cipher,
+                String additionalData,
+                byte[] nSec,
+                byte[] nPub,
+                Key k,
+                Method method
+        )throws AEADBadTagException;
+
         String decrypt(
                 String cipher,
                 String additionalData,
                 byte[] nPub,
                 Key k,
                 AEAD.Method method
-        ) throws AEADBadTagException;
+        )throws AEADBadTagException;
 
         String decrypt(
                 String cipher,
@@ -323,7 +354,7 @@ public interface AEAD {
                 byte[] nPub,
                 Key k,
                 Method method
-        ) throws AEADBadTagException;
+        )throws AEADBadTagException;
 
         DetachedEncrypt encryptDetached(
                 String m,
@@ -332,7 +363,7 @@ public interface AEAD {
                 byte[] nPub,
                 Key k,
                 Method method
-        );
+        )throws AEADBadTagException;
 
         DetachedDecrypt decryptDetached(
                 DetachedEncrypt detachedEncrypt,
@@ -341,7 +372,7 @@ public interface AEAD {
                 byte[] nPub,
                 Key k,
                 Method method
-        ) throws AEADBadTagException;
+        )throws AEADBadTagException;
 
 
     }
