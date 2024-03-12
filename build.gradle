@@ -10,7 +10,6 @@
 plugins {
     id 'application'
     id 'java-library'
-    id 'maven'
     id 'maven-publish'
     id 'signing'
     id 'biz.aQute.bnd.builder'
@@ -45,6 +44,12 @@ sourceSets {
     }
 }
 
+// Add this block to handle duplicates
+tasks.processResources {
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+}
+
+
 
 // Dependencies
 dependencies {
@@ -66,6 +71,7 @@ signing {
 task sourcesJar(type: Jar, dependsOn: classes) {
     classifier = 'sources'
     from sourceSets.main.allSource
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
 }
 
 task javadocJar(type: Jar, dependsOn: javadoc) {
